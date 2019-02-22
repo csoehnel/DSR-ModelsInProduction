@@ -1,6 +1,5 @@
 from sklearn.datasets import fetch_openml
 
-
 class OpenML:
     def __init__(self, name):
         self.name = name
@@ -24,4 +23,4 @@ class OpenML:
         data = fetch_openml(self.name)
         print(data.data.shape)
         print(data.target.shape)
-        return data.data, data.target
+        return data.data, data.target.astype("float32").reshape(-1, 1)

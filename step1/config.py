@@ -1,5 +1,6 @@
 {
     'dataset_loader_train': {
+        # like call: Table(path = iris.data, names = ["sepal length", ...]
         '__factory__': 'palladium.dataset.Table',
         'path': 'iris.data',
         'names': [
@@ -15,6 +16,7 @@
     },
 
     'dataset_loader_test': {
+        # copies properties of dataset_loader_train and overrides the following
         '__copy__': 'dataset_loader_train',
         'nrows': None,
         'skiprows': 100,
@@ -22,7 +24,7 @@
 
     'model': {
         '__factory__': 'sklearn.linear_model.LogisticRegression',
-        'C': 0.1,
+        'C': 0.5,
     },
 
     'model_persister': {

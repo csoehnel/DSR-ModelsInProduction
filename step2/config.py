@@ -34,6 +34,7 @@
     'grid_search': {
         'param_grid': {
             'C': [0.1, 1, 10, 100, 1000],
+            'penalty': ['l1', 'l2'],
         },
         'cv': 8,
         'verbose': 4,

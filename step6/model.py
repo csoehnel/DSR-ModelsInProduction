@@ -1,10 +1,9 @@
-from dstoolbox.pipeline import PipelineY
+from sklearn.pipeline import Pipeline
 import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.base import TransformerMixin
-from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
-from skorch import NeuralNetClassifier
+from skorch import NeuralNetRegressor
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -27,7 +26,8 @@ class MyModule(nn.Module):
         X = self.nonlin(self.dense0(X))
         X = self.dropout(X)
         X = F.relu(self.dense1(X))
-        X = F.softmax(self.output(X), dim=-1)
+        #X = F.softmax(self.output(X), dim=-1)
+        X = self.output(X)
         return X
 
 
@@ -49,17 +49,15 @@ def create_pipeline(
     lr=0.1,
     **kwargs
 ):
-    return PipelineY([ # sklearn only has pipelines for X
-        ('cast', Cast(np.float32)), # into single-precision for gpu
+    return Pipeline([
+        ('cast', Cast(np.float32)),
         ('scale', StandardScaler()),
-        ('net', NeuralNetClassifier( # skorch
-            MyModule, # torch module
+        ('net', NeuralNetRegressor(
+            MyModule,
             device=device,
             max_epochs=max_epochs,
             lr=lr,
             train_split=None,
             **kwargs,
         ))],
-        y_transformer=LabelEncoder(),
-        predict_use_inverse=True,
         )

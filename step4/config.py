@@ -44,7 +44,9 @@
             # settings for max_epochs and see if you can improve the
             # test score.
 
-            'net__max_epochs': [50],
+            #'net__max_epochs': [50],
+            'net__max_epochs': [10, 20, 40, 80, 160, 320],
+            'net__module__num_units': [10, 20, 30],
         },
         'cv': 5,
         'verbose': 4,
